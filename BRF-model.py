@@ -236,4 +236,4 @@ wav = wavelength of light in nanometers.
 
 """
 
-print(BRF_model(params, np.deg2rad([120]), np.deg2rad(120), np.deg2rad(48), np.deg2rad(30), 355))
+print(BRF_model(params, np.deg2rad([120, 90, 285]), np.deg2rad([120, 90, -105]), np.deg2rad([48, 32, 57]), np.deg2rad([30, 45, 66]), 355))
