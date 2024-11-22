@@ -224,23 +224,16 @@ wav = wavelength of light in nanometers.
 
 """
 
-nist_panel_angles = np.loadtxt('NIST-FOREST-panel-angles.csv', delimiter=',', skiprows=1)
-
-BRF_save = []
-for angle_ind in range(len(np.deg2rad(nist_panel_angles[:,0]))):
-    if nist_panel_angles[angle_ind][3] < 70:
-        print(nist_panel_angles[angle_ind])
-        BRF_save.append([nist_panel_angles[angle_ind][0],
-                         -nist_panel_angles[angle_ind][2],
-                         nist_panel_angles[angle_ind][3],
-                         BRF_model(params,
-                                  np.deg2rad(nist_panel_angles[angle_ind][0]),
-                                  np.deg2rad(nist_panel_angles[angle_ind][1]),
-                                  np.deg2rad(-nist_panel_angles[angle_ind][2]),
-                                  np.deg2rad(nist_panel_angles[angle_ind][3]),
-                                  757)])
-    # if wav%100==0:
-    #     print('saving at', wav)
+"""
+Inputs into BRF_model():
     
-np.savetxt('NIST-FOREST-panel-BRFs-757nm.csv', BRF_save, delimiter=',',
-           header='Relative Azim, Viewing Zenith, Incident Zenith')
+    
+azim_space = the relative azimuthal angle between sensor and sun azimuth angles defined between 0 and +2pi,
+azim_shift_space = the same azimuthal angle as above but defined between -pi and +pi,
+zen_space = the sensor view zenith angle,
+light_angles = the solar zenith angle,
+wav = wavelength of light in nanometers.
+
+"""
+
+print(BRF_model(params, np.deg2rad([120]), np.deg2rad(120), np.deg2rad(48), np.deg2rad(30), 355))
