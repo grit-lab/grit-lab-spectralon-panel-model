@@ -1,6 +1,6 @@
 We provide the Spectralon BRF model as described in the corresponding IEEE TGRS publication (DOI: 10.1109/TGRS.2024.3361392): A Comprehensive BRF Model for Spectralon® and Application to Hyperspectral Field Imagery.
 
-Currently, there are five main files for the model:
+Currently, there are five main files for this Python script:
 
 1.) BRF_normalization_factor.csv
 
