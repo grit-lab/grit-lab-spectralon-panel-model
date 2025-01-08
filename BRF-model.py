@@ -216,24 +216,28 @@ def BRF_model(params, azim_space, azim_shift_space, zen_space, light_angles, wav
 Inputs into BRF_model():
     
     
-azim_space = the relative azimuthal angle between sensor and sun azimuth angles defined between 0 and +2pi,
-azim_shift_space = the same azimuthal angle as above but defined between -pi and +pi,
-zen_space = the sensor view zenith angle,
-light_angles = the solar zenith angle,
+azim_space = the relative azimuthal angle between sensor and sun azimuth angles defined between 0 and +360 deg,
+azim_shift_space = the same azimuthal angle as above but defined between -180 deg and +180 deg,
+zen_space = the sensor view zenith angle between 0 and 70 deg,
+light_angles = the solar zenith angle between 0 and 70 deg,
 wav = wavelength of light in nanometers.
 
 """
 
-"""
-Inputs into BRF_model():
-    
-    
-azim_space = the relative azimuthal angle between sensor and sun azimuth angles defined between 0 and +2pi,
-azim_shift_space = the same azimuthal angle as above but defined between -pi and +pi,
-zen_space = the sensor view zenith angle,
-light_angles = the solar zenith angle,
-wav = wavelength of light in nanometers.
+panel_angles = np.loadtxt('panel-angles.csv', delimiter=',', skiprows=1)
 
-"""
-
-print(BRF_model(params, np.deg2rad([120, 90, 285]), np.deg2rad([120, 90, -105]), np.deg2rad([48, 32, 57]), np.deg2rad([30, 45, 66]), 355))
+BRF_save = []
+for angle_ind in range(len(np.deg2rad(panel_angles[:,0]))):
+    BRF_save.append([panel_angles[angle_ind][0],
+                     panel_angles[angle_ind][2],
+                     panel_angles[angle_ind][3],
+                     panel_angles[angle_ind][4],
+                     BRF_model(params,
+                              np.deg2rad(panel_angles[angle_ind][0]),
+                              np.deg2rad(panel_angles[angle_ind][1]),
+                              np.deg2rad(panel_angles[angle_ind][2]),
+                              np.deg2rad(panel_angles[angle_ind][3]),
+                              panel_angles[angle_ind][4])])
+    
+np.savetxt('panel-BRFs.csv', BRF_save, delimiter=',',
+           header='Relative Azimuth, Viewing Zenith, Incident Zenith, Wavelength, Panel BRF')
