@@ -1,5 +1,5 @@
 """
-Working BRF model as of 2023 January 10.
+CORRECTED MODEL 05 MAY 2026 -- CORRECTED BY SCALE OF COEFF_FACT^2
 """
 
 import numpy as np
@@ -174,7 +174,9 @@ def reddening(params, wav):
 
 ## define the scattering model
 def BRF_model(params, azim_space, azim_shift_space, zen_space, light_angles, wav):
-    
+
+    cal_coeff_data = np.loadtxt('Spectralon_Num4.txt', delimiter=' ')
+    cal_coeff = interp1d(cal_coeff_data[:,0], cal_coeff_data[:,1])(wav)
     # parse out first column, LUT currently saved 1st column as view zenith angles -- 2023 Jan 11.
     BRF_norm_data = np.loadtxt('BRF_normalization_factor.csv', delimiter=',')[:,1:]
     
@@ -201,8 +203,8 @@ def BRF_model(params, azim_space, azim_shift_space, zen_space, light_angles, wav
     # convert wav to um from nm
     reddening_model = reddening(params, wav*1e-3)
     
-    return(
-    1/BRF_norm * \
+    return( ## 22 May 2026 correction: rescaled the BRF_norm to correct values, and updated model to correct form.
+    cal_coeff/BRF_norm * \
         (diffuse_power_model + \
          diffuse_forward_model*reddening_model + \
          forward_ss_model*reddening_model + \
